@@ -53,6 +53,9 @@ Generates AI-powered:
 - overlap analysis
 - optimization strategies
 
+### Semantic Overlap Detection
+
+Uses embeddings to identify tools with similar capabilities across teams, then generates AI-powered governance explanations and consolidation recommendations.
 ---
 
 ## Architecture
