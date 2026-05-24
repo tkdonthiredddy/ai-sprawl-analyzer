@@ -1,4 +1,8 @@
 
+from src.semantic_overlap import (
+    detect_semantic_overlap,
+    explain_overlap,
+)
 from src.ai_classifier import classify_tool
 from src.insights_generator import generate_executive_insights
 from src.risk_scoring import calculate_scores
@@ -186,3 +190,40 @@ if st.button("Run AI Classification"):
     file_name="ai_governance_report.md",
     mime="text/markdown",
     )
+st.subheader("Semantic Overlap Detection")
+
+similarity_threshold = st.slider(
+    "Similarity threshold",
+    min_value=0.50,
+    max_value=0.95,
+    value=0.60,
+    step=0.01,
+)
+
+if st.button("Detect Semantic Overlap"):
+    with st.spinner("Generating embeddings and comparing tool capabilities..."):
+        overlap_records = detect_semantic_overlap(df, threshold=similarity_threshold)
+if overlap_records:
+
+    overlap_df = pd.DataFrame(overlap_records)
+
+    st.dataframe(overlap_df, use_container_width=True)
+
+    st.subheader("AI Overlap Explanations")
+
+    for overlap in overlap_records:
+
+        with st.expander(
+            f"{overlap['tool_a']} ↔ {overlap['tool_b']}"
+        ):
+
+            with st.spinner("Generating governance explanation..."):
+
+                explanation = explain_overlap(
+                    overlap["tool_a"],
+                    overlap["tool_b"],
+                    overlap["purpose_a"],
+                    overlap["purpose_b"],
+                )
+
+            st.markdown(explanation)
