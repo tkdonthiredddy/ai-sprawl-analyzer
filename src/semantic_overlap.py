@@ -31,7 +31,8 @@ def detect_semantic_overlap(df, threshold=0.72):
     embeddings = {}
 
     for tool in tools:
-        text = f"{tool['tool']} - {tool['purpose']} - Team: {tool['team']}"
+        #text = f"{tool['tool']} - {tool['purpose']} - Team: {tool['team']}"
+        text = tool["purpose"]
         embeddings[tool["tool"]] = get_embedding(text)
 
     for i in range(len(tools)):
